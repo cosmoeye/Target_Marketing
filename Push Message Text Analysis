@@ -1,0 +1,59 @@
+import pandas as pd
+import numpy as np
+import matplotlib.plt as plt
+
+# data import & preprocessing
+raw = pd.read_csv('directory/file.csv',encoding='euc-kr')
+
+data = raw.drop([col1,col2],axis=1)
+
+# Text Merge
+click_rate = data['click_rate'].str.replace('%','')
+iter_num = pd.to_numeric(click_rate).astype(np.int64)
+
+data['iter_num'] = iter_num
+
+msg = data['msg'] * data['iter_num']
+
+i = 0
+msg_str = ""
+for raw in msg;
+  msg_str += msg[i]
+  i += 1
+  
+print(msg_str)  
+
+# Creating WordCloud
+import platform
+from matplotlib import rc
+rc('font',family = 'NanumGothic') # Korean font setting
+
+from konlpy.tag import Hannanum
+h = Hannanum()
+
+ms_nouns = h.nouns(msg_str)
+
+import nltk
+
+msg_nouns_text = nlkt.Text(msg_nouns, name = 'msgCorpus') # Corpus created
+msg_nouns_text.vocab()
+
+stop_words = ['광고','(광고)','수신변경','설정']
+msg_nouns = [each_word for each_word in msg_nouns if each_word not in stop_words]
+msg_nouns = nltk.Text(msg_nouns, name = 'msgCorpus') # Corpus w/o stopwords created
+
+# Visualization
+plt.figure(figsize = (12,6))
+msg_nouns.plot(50)
+plt.show()
+
+from wordcloud import Wordcloud
+
+msg_final = msg_nouns.vocab().most_common(100)
+wordcloud = WordCloud(font_path = 'NanumGothic',
+                      relative_scaling = 0.2,
+                      backgroud_color = 'white').generte_from_frequencies(dict(msg_final))
+plt.figure(figsize = (12,8))
+plt.imshow(wordcloud, interpolation = 'bilinear')
+plt.axis('off')
+plt.show() # WordCloud img created
